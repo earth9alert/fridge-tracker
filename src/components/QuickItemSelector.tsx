@@ -5,7 +5,7 @@ import { getCategoryIcon } from '../utils/icons';
 import './QuickItemSelector.css';
 
 interface QuickItemSelectorProps {
-  onSelectItem: (name: string, unit: string) => void;
+  onSelectItem: (name: string, unit: string, category?: string) => void;
 }
 
 export const QuickItemSelector: React.FC<QuickItemSelectorProps> = ({ onSelectItem }) => {
@@ -16,8 +16,8 @@ export const QuickItemSelector: React.FC<QuickItemSelectorProps> = ({ onSelectIt
     ? quickItems.filter(item => item.category === selectedCategory)
     : quickItems;
 
-  const handleSelectItem = (name: string, unit: string) => {
-    onSelectItem(name, unit);
+  const handleSelectItem = (name: string, unit: string, category: string) => {
+    onSelectItem(name, unit, category);
     setIsOpen(false);
   };
 
@@ -74,7 +74,7 @@ export const QuickItemSelector: React.FC<QuickItemSelectorProps> = ({ onSelectIt
                 <button
                   key={idx}
                   className="quick-item-btn"
-                  onClick={() => handleSelectItem(item.name, item.unit)}
+                  onClick={() => handleSelectItem(item.name, item.unit, item.category)}
                 >
                   <span className="item-icon">{getCategoryIcon(item.category)}</span>
                   <span className="item-name">{item.name}</span>

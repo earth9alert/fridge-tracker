@@ -45,19 +45,20 @@ export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialI
     onSubmit(item);
   };
 
-  const handleQuickSelect = (name: string, unit: string) => {
-    setFormData({
-      ...formData,
-      name,
-      unit,
-    });
-  };
-
   const handleNameChange = (name: string, unit?: string) => {
     setFormData({
       ...formData,
       name,
       ...(unit && { unit }),
+    });
+  };
+
+  const handleQuickSelect = (name: string, unit: string, category?: string) => {
+    setFormData({
+      ...formData,
+      name,
+      unit,
+      ...(category && { category: category as any }),
     });
   };
 
