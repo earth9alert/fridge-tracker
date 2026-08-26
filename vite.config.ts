@@ -7,5 +7,25 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true
+  },
+  build: {
+    target: 'ES2020',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom']
+        }
+      }
+    },
+    reportCompressedSize: true,
+    cssCodeSplit: true,
+    sourcemap: false
   }
 })
