@@ -48,6 +48,7 @@
   flex-wrap: wrap;
   position: relative;
   border-bottom: 3px solid #0c4a6e;
+  z-index: 1000;
 }
 
 .app-header::after {
