@@ -5,6 +5,7 @@ import { ItemCard } from './components/ItemCard';
 import { CategoryFilter } from './components/CategoryFilter';
 import { SearchBar } from './components/SearchBar';
 import { BackupRestore } from './components/BackupRestore';
+import { RecipeRecommendation } from './components/RecipeRecommendation';
 import { FridgeItem, Category, CATEGORIES } from './types/item';
 import './App.css';
 
@@ -86,6 +87,11 @@ function App() {
       </header>
 
       <main className="app-main">
+        {/* Recipe Recommendation */}
+        {items.length > 0 && (
+          <RecipeRecommendation items={items} />
+        )}
+
         {/* Alerts */}
         {expiredItems.length > 0 && (
           <div className="alert alert--danger">
