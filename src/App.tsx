@@ -7,6 +7,7 @@ import { SearchBar } from './components/SearchBar';
 import { BackupRestore } from './components/BackupRestore';
 import { RecipeRecommendation } from './components/RecipeRecommendation';
 import { Toast, useToast } from './components/Toast';
+import { ThemeToggle } from './components/ThemeToggle';
 import { FridgeItem, Category, CATEGORIES } from './types/item';
 import './App.css';
 
@@ -85,6 +86,7 @@ function App() {
 
   return (
     <div className="app">
+      <ThemeToggle />
       <header className="app-header">
         <div className="header-content">
           <h1>🧊 ตู้เย็น - ตัวจัดการสิ่งของ</h1>

@@ -110,6 +110,8 @@
   color-scheme: light;
 }
 
+/* Dark mode via data-theme attribute */
+:root[data-theme="dark"],
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-primary: #111827;
