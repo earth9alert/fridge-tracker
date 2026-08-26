@@ -87,14 +87,6 @@ export const FridgeVisual: React.FC<FridgeVisualProps> = ({ items }) => {
             {/* Frost effect */}
             <div className="frost-effect"></div>
           </div>
-
-          {/* Fridge Bottom (Freezer) */}
-          <div className="fridge-freezer">
-            <div className="freezer-handle"></div>
-            <div className="freezer-items">
-              ❄️ Freezer ({items.filter(i => i.category === 'frozen').length})
-            </div>
-          </div>
         </div>
 
         {/* Stats on side */}
