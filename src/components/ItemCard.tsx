@@ -8,7 +8,7 @@ interface ItemCardProps {
   item: FridgeItem;
   onEdit: (item: FridgeItem) => void;
   onDelete: (id: string) => void;
-  onUpdateItem?: (id: string, item: FridgeItem) => void;
+  onUpdateItem?: (id: string, item: Partial<FridgeItem>) => void;
 }
 
 export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onDelete, onUpdateItem }) => {
@@ -17,29 +17,20 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onDelete, onUp
   const expiryMessage = dateUtils.getExpiryMessage(item.expiryDate);
 
   const handleAddPortion = (portion: Portion) => {
-    const updated = {
-      ...item,
-      portions: [...(item.portions || []), portion],
-    };
-    onUpdateItem?.(item.id, updated);
+    const updatedPortions = [...(item.portions || []), portion];
+    onUpdateItem?.(item.id, { portions: updatedPortions });
   };
 
   const handleUsePortion = (portionId: string, usedDate: string) => {
-    const updated = {
-      ...item,
-      portions: (item.portions || []).map((p) =>
-        p.id === portionId ? { ...p, usedDate } : p
-      ),
-    };
-    onUpdateItem?.(item.id, updated);
+    const updatedPortions = (item.portions || []).map((p) =>
+      p.id === portionId ? { ...p, usedDate } : p
+    );
+    onUpdateItem?.(item.id, { portions: updatedPortions });
   };
 
   const handleDeletePortion = (portionId: string) => {
-    const updated = {
-      ...item,
-      portions: (item.portions || []).filter((p) => p.id !== portionId),
-    };
-    onUpdateItem?.(item.id, updated);
+    const updatedPortions = (item.portions || []).filter((p) => p.id !== portionId);
+    onUpdateItem?.(item.id, { portions: updatedPortions });
   };
 
   return (
