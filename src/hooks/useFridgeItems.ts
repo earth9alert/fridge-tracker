@@ -1,6 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { FridgeItem } from '../types/item';
 import { storage } from '../utils/storage';
+import * as supabaseUtils from '../utils/supabase';
+
+const USE_SUPABASE = (import.meta as any).env.VITE_USE_SUPABASE === 'true';
 
 export const useFridgeItems = () => {
   const [items, setItems] = useState<FridgeItem[]>([]);
@@ -8,38 +11,87 @@ export const useFridgeItems = () => {
 
   // Load items on mount
   useEffect(() => {
-    const loadedItems = storage.getItems();
-    setItems(loadedItems);
-    setIsLoading(false);
+    const loadItems = async () => {
+      setIsLoading(true);
+      let loadedItems: FridgeItem[] = [];
+
+      if (USE_SUPABASE) {
+        // ลองโหลดจาก Supabase ก่อน
+        loadedItems = await supabaseUtils.getItems();
+        if (loadedItems.length === 0) {
+          // ถ้า Supabase ว่าง ให้ย้ายจาก LocalStorage
+          const localItems = storage.getItems();
+          if (localItems.length > 0) {
+            for (const item of localItems) {
+              await supabaseUtils.addItem(item);
+            }
+            loadedItems = localItems;
+          }
+        }
+      } else {
+        // ใช้ LocalStorage ตามปกติ
+        loadedItems = storage.getItems();
+      }
+
+      setItems(loadedItems);
+      setIsLoading(false);
+    };
+
+    loadItems();
   }, []);
 
   // Add new item
-  const addItem = useCallback((item: FridgeItem) => {
-    setItems(prevItems => {
-      const newItems = [...prevItems, item];
-      storage.saveItems(newItems);
-      return newItems;
-    });
+  const addItem = useCallback(async (item: FridgeItem) => {
+    if (USE_SUPABASE) {
+      const result = await supabaseUtils.addItem(item);
+      if (result) {
+        setItems(prevItems => [...prevItems, result]);
+      }
+    } else {
+      setItems(prevItems => {
+        const newItems = [...prevItems, item];
+        storage.saveItems(newItems);
+        return newItems;
+      });
+    }
   }, []);
 
   // Update item
   const updateItem = useCallback((id: string, updates: Partial<FridgeItem>) => {
-    setItems(prevItems => {
-      const newItems = prevItems.map(item =>
-        item.id === id ? { ...item, ...updates } : item
-      );
-      storage.saveItems(newItems);
-      return newItems;
-    });
+    if (USE_SUPABASE) {
+      supabaseUtils.updateItem(id, updates).then(result => {
+        if (result) {
+          setItems(prevItems =>
+            prevItems.map(item => (item.id === id ? result : item))
+          );
+        }
+      });
+    } else {
+      setItems(prevItems => {
+        const newItems = prevItems.map(item =>
+          item.id === id ? { ...item, ...updates } : item
+        );
+        storage.saveItems(newItems);
+        return newItems;
+      });
+    }
   }, []);
 
   // Delete item
   const deleteItem = useCallback((id: string) => {
-    setItems(prevItems => {
-      const newItems = prevItems.filter(item => item.id !== id);
-      storage.saveItems(newItems);
-      return newItems;
-    });
+    if (USE_SUPABASE) {
+      supabaseUtils.deleteItem(id).then(success => {
+        if (success) {
+          setItems(prevItems => prevItems.filter(item => item.id !== id));
+        }
+      });
+    } else {
+      setItems(prevItems => {
+        const newItems = prevItems.filter(item => item.id !== id);
+        storage.saveItems(newItems);
+        return newItems;
+      });
+    }
   }, []);
 
   // Get items by category
