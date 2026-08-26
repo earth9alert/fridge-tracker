@@ -1,0 +1,35 @@
+.backup-restore {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.backup-restore button {
+  padding: 0.75em 1.5em;
+  font-size: 0.95em;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--text-secondary);
+  color: white;
+}
+
+.backup-restore button:hover {
+  background-color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 768px) {
+  .backup-restore {
+    width: 100%;
+  }
+
+  .backup-restore button {
+    flex: 1;
+    min-width: auto;
+    font-size: 0.9em;
+  }
+}
