@@ -22,10 +22,16 @@ interface DbItem {
   created_at?: string;
 }
 
+export interface OperationResult<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
 /**
  * Get all items for current user
  */
-export const getItems = async (): Promise<FridgeItem[]> => {
+export const getItems = async (): Promise<OperationResult<FridgeItem[]>> => {
   try {
     const { data, error } = await supabase
       .from('fridge_items')
@@ -34,20 +40,29 @@ export const getItems = async (): Promise<FridgeItem[]> => {
 
     if (error) {
       console.error('Supabase fetch error:', error);
-      return [];
+      return {
+        success: false,
+        error: error.message || 'เกิดข้อผิดพลาดในการดึงข้อมูล',
+      };
     }
 
-    return (data || []).map(dbItemToFridgeItem);
+    return {
+      success: true,
+      data: (data || []).map(dbItemToFridgeItem),
+    };
   } catch (error) {
     console.error('Error fetching items:', error);
-    return [];
+    return {
+      success: false,
+      error: 'เกิดข้อผิดพลาดที่ไม่คาดคิด',
+    };
   }
 };
 
 /**
  * Add new item
  */
-export const addItem = async (item: FridgeItem): Promise<FridgeItem | null> => {
+export const addItem = async (item: FridgeItem): Promise<OperationResult<FridgeItem>> => {
   try {
     const dbItem = fridgeItemToDbItem(item);
     const { data, error } = await supabase
@@ -58,13 +73,22 @@ export const addItem = async (item: FridgeItem): Promise<FridgeItem | null> => {
 
     if (error) {
       console.error('Supabase insert error:', error);
-      return null;
+      return {
+        success: false,
+        error: error.message || 'ไม่สามารถเพิ่มสิ่งของได้',
+      };
     }
 
-    return dbItemToFridgeItem(data);
+    return {
+      success: true,
+      data: dbItemToFridgeItem(data),
+    };
   } catch (error) {
     console.error('Error adding item:', error);
-    return null;
+    return {
+      success: false,
+      error: 'เกิดข้อผิดพลาดในการเพิ่มสิ่งของ',
+    };
   }
 };
 
@@ -74,7 +98,7 @@ export const addItem = async (item: FridgeItem): Promise<FridgeItem | null> => {
 export const updateItem = async (
   id: string,
   updates: Partial<FridgeItem>
-): Promise<FridgeItem | null> => {
+): Promise<OperationResult<FridgeItem>> => {
   try {
     const dbUpdates = Object.entries(updates).reduce((acc, [key, value]) => {
       if (key === 'expiryDate') acc['expiry_date'] = value;
@@ -92,20 +116,29 @@ export const updateItem = async (
 
     if (error) {
       console.error('Supabase update error:', error);
-      return null;
+      return {
+        success: false,
+        error: error.message || 'ไม่สามารถอัปเดตสิ่งของได้',
+      };
     }
 
-    return dbItemToFridgeItem(data);
+    return {
+      success: true,
+      data: dbItemToFridgeItem(data),
+    };
   } catch (error) {
     console.error('Error updating item:', error);
-    return null;
+    return {
+      success: false,
+      error: 'เกิดข้อผิดพลาดในการอัปเดตสิ่งของ',
+    };
   }
 };
 
 /**
  * Delete item
  */
-export const deleteItem = async (id: string): Promise<boolean> => {
+export const deleteItem = async (id: string): Promise<OperationResult<void>> => {
   try {
     const { error } = await supabase
       .from('fridge_items')
@@ -114,13 +147,19 @@ export const deleteItem = async (id: string): Promise<boolean> => {
 
     if (error) {
       console.error('Supabase delete error:', error);
-      return false;
+      return {
+        success: false,
+        error: error.message || 'ไม่สามารถลบสิ่งของได้',
+      };
     }
 
-    return true;
+    return { success: true };
   } catch (error) {
     console.error('Error deleting item:', error);
-    return false;
+    return {
+      success: false,
+      error: 'เกิดข้อผิดพลาดในการลบสิ่งของ',
+    };
   }
 };
 

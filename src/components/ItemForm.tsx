@@ -10,9 +10,10 @@ interface ItemFormProps {
   onSubmit: (item: FridgeItem) => void;
   onCancel: () => void;
   initialItem?: FridgeItem;
+  isSaving?: boolean;
 }
 
-export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialItem }) => {
+export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialItem, isSaving = false }) => {
   const [formData, setFormData] = useState({
     name: initialItem?.name || '',
     category: initialItem?.category || 'vegetables',
@@ -144,10 +145,10 @@ export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialI
           </div>
 
           <div className="form-actions">
-            <button type="submit" className="btn-primary">
-              {initialItem ? 'บันทึกการเปลี่ยนแปลง' : 'เพิ่มสิ่งของ'}
+            <button type="submit" className="btn-primary" disabled={isSaving}>
+              {isSaving ? '💾 กำลังบันทึก...' : initialItem ? 'บันทึกการเปลี่ยนแปลง' : 'เพิ่มสิ่งของ'}
             </button>
-            <button type="button" className="btn-secondary" onClick={onCancel}>
+            <button type="button" className="btn-secondary" onClick={onCancel} disabled={isSaving}>
               ยกเลิก
             </button>
           </div>

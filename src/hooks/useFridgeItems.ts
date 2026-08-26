@@ -5,25 +5,44 @@ import * as supabaseUtils from '../utils/supabase';
 
 const USE_SUPABASE = import.meta.env.VITE_USE_SUPABASE === 'true';
 
+export interface UseFridgeItemsState {
+  items: FridgeItem[];
+  isLoading: boolean;
+  isSaving: boolean;
+  error: string | null;
+}
+
 export const useFridgeItems = () => {
   const [items, setItems] = useState<FridgeItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Load items on mount
   useEffect(() => {
     const loadItems = async () => {
       setIsLoading(true);
+      setError(null);
       let loadedItems: FridgeItem[] = [];
 
       if (USE_SUPABASE) {
         // ลองโหลดจาก Supabase ก่อน
-        loadedItems = await supabaseUtils.getItems();
-        if (loadedItems.length === 0) {
-          // ถ้า Supabase ว่าง ให้ย้ายจาก LocalStorage
+        const result = await supabaseUtils.getItems();
+        if (result.success && result.data) {
+          loadedItems = result.data;
+        } else if (!result.success) {
+          setError(result.error || 'ไม่สามารถดึงข้อมูลได้');
+          // fallback to localStorage
+          loadedItems = storage.getItems();
+        } else {
+          // Supabase ว่าง ให้ย้ายจาก LocalStorage
           const localItems = storage.getItems();
           if (localItems.length > 0) {
             for (const item of localItems) {
-              await supabaseUtils.addItem(item);
+              const addResult = await supabaseUtils.addItem(item);
+              if (addResult.success) {
+                // Item added successfully
+              }
             }
             loadedItems = localItems;
           }
@@ -42,10 +61,15 @@ export const useFridgeItems = () => {
 
   // Add new item
   const addItem = useCallback(async (item: FridgeItem) => {
+    setIsSaving(true);
+    setError(null);
+
     if (USE_SUPABASE) {
       const result = await supabaseUtils.addItem(item);
-      if (result) {
-        setItems(prevItems => [...prevItems, result]);
+      if (result.success && result.data) {
+        setItems(prevItems => [...prevItems, result.data!]);
+      } else {
+        setError(result.error || 'ไม่สามารถเพิ่มสิ่งของได้');
       }
     } else {
       setItems(prevItems => {
@@ -54,17 +78,25 @@ export const useFridgeItems = () => {
         return newItems;
       });
     }
+
+    setIsSaving(false);
   }, []);
 
   // Update item
   const updateItem = useCallback((id: string, updates: Partial<FridgeItem>) => {
+    setIsSaving(true);
+    setError(null);
+
     if (USE_SUPABASE) {
       supabaseUtils.updateItem(id, updates).then(result => {
-        if (result) {
+        if (result.success && result.data) {
           setItems(prevItems =>
-            prevItems.map(item => (item.id === id ? result : item))
+            prevItems.map(item => (item.id === id ? result.data! : item))
           );
+        } else {
+          setError(result.error || 'ไม่สามารถอัปเดตสิ่งของได้');
         }
+        setIsSaving(false);
       });
     } else {
       setItems(prevItems => {
@@ -74,16 +106,23 @@ export const useFridgeItems = () => {
         storage.saveItems(newItems);
         return newItems;
       });
+      setIsSaving(false);
     }
   }, []);
 
   // Delete item
   const deleteItem = useCallback((id: string) => {
+    setIsSaving(true);
+    setError(null);
+
     if (USE_SUPABASE) {
-      supabaseUtils.deleteItem(id).then(success => {
-        if (success) {
+      supabaseUtils.deleteItem(id).then(result => {
+        if (result.success) {
           setItems(prevItems => prevItems.filter(item => item.id !== id));
+        } else {
+          setError(result.error || 'ไม่สามารถลบสิ่งของได้');
         }
+        setIsSaving(false);
       });
     } else {
       setItems(prevItems => {
@@ -91,6 +130,7 @@ export const useFridgeItems = () => {
         storage.saveItems(newItems);
         return newItems;
       });
+      setIsSaving(false);
     }
   }, []);
 
@@ -134,6 +174,8 @@ export const useFridgeItems = () => {
   return {
     items,
     isLoading,
+    isSaving,
+    error,
     addItem,
     updateItem,
     deleteItem,

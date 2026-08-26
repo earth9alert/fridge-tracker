@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useFridgeItems } from './hooks/useFridgeItems';
 import { ItemForm } from './components/ItemForm';
 import { ItemCard } from './components/ItemCard';
@@ -6,15 +6,24 @@ import { CategoryFilter } from './components/CategoryFilter';
 import { SearchBar } from './components/SearchBar';
 import { BackupRestore } from './components/BackupRestore';
 import { RecipeRecommendation } from './components/RecipeRecommendation';
+import { Toast, useToast } from './components/Toast';
 import { FridgeItem, Category, CATEGORIES } from './types/item';
 import './App.css';
 
 function App() {
-  const { items, isLoading, addItem, updateItem, deleteItem, getExpiringItems, getExpiredItems } = useFridgeItems();
+  const { items, isLoading, isSaving, error, addItem, updateItem, deleteItem, getExpiringItems, getExpiredItems } = useFridgeItems();
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<FridgeItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const toast = useToast();
+
+  // Show error toast when error occurs
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error, toast]);
 
   const expiredItems = useMemo(() => getExpiredItems(), [getExpiredItems]);
   const expiringItems = useMemo(() => getExpiringItems(3), [getExpiringItems]);
@@ -49,8 +58,10 @@ function App() {
   const handleSubmit = (item: FridgeItem) => {
     if (editingItem) {
       updateItem(editingItem.id, item);
+      toast.success('อัปเดตสิ่งของสำเร็จ');
     } else {
       addItem(item);
+      toast.success('เพิ่มสิ่งของสำเร็จ');
     }
     setShowForm(false);
     setEditingItem(null);
@@ -64,6 +75,7 @@ function App() {
   const handleDelete = (id: string) => {
     if (confirm('ต้องการลบสิ่งของนี้หรือไม่?')) {
       deleteItem(id);
+      toast.success('ลบสิ่งของสำเร็จ');
     }
   };
 
@@ -81,7 +93,13 @@ function App() {
       </header>
 
       <main className="app-main">
-        {/* Alerts - ด้านบน */}
+        {/* Loading state indicator */}
+        {isSaving && (
+          <div className="alert alert--info">
+            <p>💾 กำลังบันทึก...</p>
+          </div>
+        )}
+
         {expiredItems.length > 0 && (
           <div className="alert alert--danger">
             <h3>⚠️ สิ่งของที่หมดอายุแล้ว ({expiredItems.length})</h3>
@@ -165,8 +183,12 @@ function App() {
             setEditingItem(null);
           }}
           initialItem={editingItem || undefined}
+          isSaving={isSaving}
         />
       )}
+
+      {/* Toast Notifications */}
+      <Toast messages={toast.messages} onDismiss={toast.dismiss} />
     </div>
   );
 }
