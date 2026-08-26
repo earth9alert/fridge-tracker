@@ -82,15 +82,7 @@ function App() {
       </header>
 
       <main className="app-main">
-        {/* Recipe Recommendation */}
-        {items.length > 0 && (
-          <RecipeRecommendation items={items} />
-        )}
-
-        {/* Shopping Recommendation */}
-        <ShoppingRecommendation items={items} />
-
-        {/* Alerts */}
+        {/* Alerts - ด้านบน */}
         {expiredItems.length > 0 && (
           <div className="alert alert--danger">
             <h3>⚠️ สิ่งของที่หมดอายุแล้ว ({expiredItems.length})</h3>
@@ -105,6 +97,7 @@ function App() {
           </div>
         )}
 
+        {/* Empty State */}
         {items.length === 0 && (
           <div className="empty-state">
             <div className="empty-state__icon">🧊</div>
@@ -113,9 +106,10 @@ function App() {
           </div>
         )}
 
+        {/* Main Content */}
         {items.length > 0 && (
           <>
-            {/* Search and Filter */}
+            {/* Search and Filter Controls */}
             <div className="controls">
               <SearchBar value={searchQuery} onChange={setSearchQuery} />
               <CategoryFilter
@@ -125,6 +119,12 @@ function App() {
               />
               <BackupRestore />
             </div>
+
+            {/* Recipe Recommendations */}
+            <RecipeRecommendation items={items} />
+
+            {/* Shopping Recommendations */}
+            <ShoppingRecommendation items={items} />
 
             {/* Items Grid */}
             {filteredItems.length === 0 ? (
