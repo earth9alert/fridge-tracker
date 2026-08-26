@@ -1,5 +1,6 @@
-import React from 'react';
-import { FridgeItem } from '../types/item';
+import React, { useState } from 'react';
+import { FridgeItem, Portion } from '../types/item';
+import { PortionManager } from './PortionManager';
 import { dateUtils } from '../utils/date';
 import './ItemCard.css';
 
@@ -7,11 +8,39 @@ interface ItemCardProps {
   item: FridgeItem;
   onEdit: (item: FridgeItem) => void;
   onDelete: (id: string) => void;
+  onUpdateItem?: (id: string, item: FridgeItem) => void;
 }
 
-export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onDelete }) => {
+export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onDelete, onUpdateItem }) => {
+  const [showPortions, setShowPortions] = useState(false);
   const expiryStatus = dateUtils.getExpiryStatus(item.expiryDate);
   const expiryMessage = dateUtils.getExpiryMessage(item.expiryDate);
+
+  const handleAddPortion = (portion: Portion) => {
+    const updated = {
+      ...item,
+      portions: [...(item.portions || []), portion],
+    };
+    onUpdateItem?.(item.id, updated);
+  };
+
+  const handleUsePortion = (portionId: string, usedDate: string) => {
+    const updated = {
+      ...item,
+      portions: (item.portions || []).map((p) =>
+        p.id === portionId ? { ...p, usedDate } : p
+      ),
+    };
+    onUpdateItem?.(item.id, updated);
+  };
+
+  const handleDeletePortion = (portionId: string) => {
+    const updated = {
+      ...item,
+      portions: (item.portions || []).filter((p) => p.id !== portionId),
+    };
+    onUpdateItem?.(item.id, updated);
+  };
 
   return (
     <div className={`item-card item-card--${expiryStatus}`}>
@@ -47,6 +76,32 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onDelete }) =>
           </div>
         )}
       </div>
+
+      {/* Portion Manager Toggle */}
+      {item.category === 'meat' || item.category === 'frozen' ? (
+        <div className="item-card__portions-toggle">
+          <button
+            className="btn-toggle-portions"
+            onClick={() => setShowPortions(!showPortions)}
+          >
+            {showPortions ? '▼ ซ่อนการแบ่ง' : '▶ แสดงการแบ่ง'}
+            {item.portions && item.portions.length > 0 && (
+              <span className="portion-badge">{item.portions.length}</span>
+            )}
+          </button>
+        </div>
+      ) : null}
+
+      {/* Portion Manager */}
+      {showPortions && (item.category === 'meat' || item.category === 'frozen') && (
+        <PortionManager
+          portions={item.portions || []}
+          totalUnit={item.unit}
+          onAddPortion={handleAddPortion}
+          onUsePortion={handleUsePortion}
+          onDeletePortion={handleDeletePortion}
+        />
+      )}
 
       <div className="item-card__actions">
         <button className="btn-small btn-edit" onClick={() => onEdit(item)}>

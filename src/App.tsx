@@ -141,6 +141,7 @@ function App() {
                     item={item}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
+                    onUpdateItem={updateItem}
                   />
                 ))}
               </div>

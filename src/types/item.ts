@@ -1,5 +1,12 @@
 export type Category = 'vegetables' | 'fruits' | 'meat' | 'dairy' | 'condiments' | 'frozen' | 'other';
 
+export interface Portion {
+  id: string;
+  quantity: number;
+  unit: string;
+  usedDate?: string; // ISO date string, empty if not used yet
+}
+
 export interface FridgeItem {
   id: string;
   name: string;
@@ -9,6 +16,7 @@ export interface FridgeItem {
   expiryDate: string; // ISO date string
   addedDate: string;
   notes?: string;
+  portions?: Portion[]; // แบ่งเป็นถุงๆ (optional, สำหรับเนื้อและอื่นๆ)
 }
 
 export const CATEGORIES: { label: string; value: Category }[] = [
