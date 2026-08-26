@@ -5,6 +5,7 @@
   flex-direction: column;
   overflow-x: hidden;
   position: relative;
+  transition: background var(--transition-slow), color var(--transition-slow);
 }
 
 .app.loading {
@@ -224,6 +225,16 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-2xl);
+  animation: fadeIn var(--transition-slow);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .no-results {

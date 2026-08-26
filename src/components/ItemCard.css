@@ -4,12 +4,24 @@
   border-radius: var(--radius-xl);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
-  transition: all var(--transition-base);
+  transition: all var(--transition-base), background var(--transition-base), color var(--transition-base);
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
   border-left: 4px solid var(--success);
+  animation: slideUp var(--transition-slow);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .item-card::before {
