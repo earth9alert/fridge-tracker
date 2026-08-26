@@ -3,7 +3,7 @@ import { FridgeItem } from '../types/item';
 import { storage } from '../utils/storage';
 import * as supabaseUtils from '../utils/supabase';
 
-const USE_SUPABASE = (import.meta as any).env.VITE_USE_SUPABASE === 'true';
+const USE_SUPABASE = import.meta.env.VITE_USE_SUPABASE === 'true';
 
 export const useFridgeItems = () => {
   const [items, setItems] = useState<FridgeItem[]>([]);
