@@ -1,13 +1,13 @@
 :root {
   color-scheme: light dark;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #1a1a1a;
-  --text-secondary: #666;
-  --border-color: #e8eaed;
-  --primary-color: #10b981;
-  --primary-dark: #059669;
-  --primary-light: #d1fae5;
+  --bg-primary: #e8f4f8;
+  --bg-secondary: #f5fafc;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-color: #cbd5e1;
+  --primary-color: #0ea5e9;
+  --primary-dark: #0284c7;
+  --primary-light: #cffafe;
   --danger-color: #ef4444;
   --warning-color: #f59e0b;
   --info-color: #3b82f6;
@@ -15,8 +15,10 @@
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-inset: inset 0 2px 8px rgba(0, 0, 0, 0.1);
   --radius: 8px;
   --radius-lg: 12px;
+  --frost: rgba(255, 255, 255, 0.15);
 
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -25,7 +27,7 @@
   font-weight: 400;
 
   color: var(--text-primary);
-  background-color: var(--bg-primary);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
 }
 
 @media (prefers-color-scheme: dark) {
