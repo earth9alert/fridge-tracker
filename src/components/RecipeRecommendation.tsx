@@ -28,7 +28,8 @@ export const RecipeRecommendation: React.FC<RecipeRecommendationProps> = ({ item
     return Math.round((matched / recipe.ingredients.length) * 100);
   };
 
-  if (items.length === 0 || matchedRecipes.length === 0) {
+  // Show recipe section even if no perfect matches - show all recipes with % match
+  if (items.length === 0) {
     return null;
   }
 

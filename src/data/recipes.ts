@@ -717,8 +717,8 @@ export const findRecipesByItems = (itemNames: string[]): Recipe[] => {
       )
     ).length;
 
-    // คืนเฉพาะเมนูที่มีวัตถุดิบตรงกันอย่างน้อย 50% ขึ้นไป
-    return matchCount >= Math.ceil(recipe.ingredients.length * 0.5);
+    // คืนเฉพาะเมนูที่มีวัตถุดิบตรงกันอย่างน้อย 30% ขึ้นไป (ลดจาก 50%)
+    return matchCount >= Math.ceil(recipe.ingredients.length * 0.3);
   });
 };
 
