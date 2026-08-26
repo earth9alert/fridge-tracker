@@ -314,6 +314,7 @@
 @media (max-width: 768px) {
   .app-header {
     padding: var(--spacing-lg) var(--spacing-md);
+    padding-top: calc(var(--spacing-lg) + env(safe-area-inset-top));
   }
 
   .header-content h1 {
@@ -326,6 +327,7 @@
 
   .app-main {
     padding: var(--spacing-lg) var(--spacing-md);
+    padding-bottom: calc(var(--spacing-lg) + 80px);
   }
 
   .controls {
@@ -351,8 +353,80 @@
   .fab {
     bottom: var(--spacing-lg);
     right: var(--spacing-lg);
+    bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+    right: calc(var(--spacing-lg) + env(safe-area-inset-right));
     width: 52px;
     height: 52px;
     font-size: var(--font-size-xl);
+  }
+
+  /* Larger touch targets */
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    font-size: 16px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .app-header {
+    padding: var(--spacing-md) var(--spacing-sm);
+    padding-top: calc(var(--spacing-md) + env(safe-area-inset-top));
+  }
+
+  .header-content h1 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .header-subtitle {
+    font-size: 0.7rem;
+  }
+
+  .app-main {
+    padding: var(--spacing-md) var(--spacing-sm);
+    padding-bottom: calc(var(--spacing-md) + 80px);
+  }
+
+  .items-grid {
+    gap: var(--spacing-sm);
+  }
+
+  .controls {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .fab {
+    width: 48px;
+    height: 48px;
+    font-size: var(--font-size-lg);
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom));
+    right: calc(var(--spacing-md) + env(safe-area-inset-right));
+  }
+
+  .alert {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .empty-state {
+    padding: var(--spacing-2xl) var(--spacing-sm);
+  }
+
+  .empty-state h2 {
+    font-size: var(--font-size-lg);
+  }
+
+  .empty-state p {
+    font-size: var(--font-size-sm);
   }
 }

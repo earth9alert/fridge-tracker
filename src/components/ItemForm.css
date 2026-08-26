@@ -121,9 +121,17 @@
 }
 
 @media (max-width: 640px) {
+  .item-form-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
   .item-form {
     padding: var(--spacing-lg);
-    max-height: none;
+    max-height: 90vh;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    width: 100%;
+    max-width: none;
   }
 
   .item-form h2 {
@@ -138,6 +146,27 @@
   .form-actions {
     flex-direction: column;
     gap: var(--spacing-md);
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .name-input-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+
+  .name-input-group input {
+    width: 100%;
+  }
+
+  .form-group {
+    gap: var(--spacing-sm);
   }
 }
 
