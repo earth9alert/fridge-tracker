@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { quickItems } from '../data/quickItems';
 import { CATEGORIES } from '../types/item';
+import { getCategoryIcon } from '../utils/icons';
 import './QuickItemSelector.css';
 
 interface QuickItemSelectorProps {
@@ -60,6 +61,7 @@ export const QuickItemSelector: React.FC<QuickItemSelectorProps> = ({ onSelectIt
                     className={`cat-btn ${selectedCategory === cat.value ? 'active' : ''}`}
                     onClick={() => setSelectedCategory(cat.value)}
                   >
+                    <span className="cat-icon">{getCategoryIcon(cat.value as any)}</span>
                     {cat.label} ({count})
                   </button>
                 );
@@ -74,6 +76,7 @@ export const QuickItemSelector: React.FC<QuickItemSelectorProps> = ({ onSelectIt
                   className="quick-item-btn"
                   onClick={() => handleSelectItem(item.name, item.unit)}
                 >
+                  <span className="item-icon">{getCategoryIcon(item.category)}</span>
                   <span className="item-name">{item.name}</span>
                   <span className="item-unit">{item.unit}</span>
                 </button>
