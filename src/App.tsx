@@ -11,7 +11,6 @@ import './App.css';
 
 function App() {
   const { items, isLoading, addItem, updateItem, deleteItem, getExpiringItems, getExpiredItems } = useFridgeItems();
-  const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<FridgeItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,13 +51,11 @@ function App() {
     } else {
       addItem(item);
     }
-    setShowForm(false);
     setEditingItem(null);
   };
 
   const handleEdit = (item: FridgeItem) => {
     setEditingItem(item);
-    setShowForm(true);
   };
 
   const handleDelete = (id: string) => {
@@ -78,15 +75,21 @@ function App() {
           <h1>🧊 ตู้เย็น - ตัวจัดการสิ่งของ</h1>
           <p className="header-subtitle">ติดตามสิ่งของในตู้เย็นของคุณ</p>
         </div>
-        <button className="btn-primary btn-large" onClick={() => {
-          setEditingItem(null);
-          setShowForm(true);
-        }}>
-          ➕ เพิ่มสิ่งของ
-        </button>
       </header>
 
       <main className="app-main">
+        {/* Item Form - Always Visible */}
+        <div className="form-section">
+          <ItemForm
+            onSubmit={handleSubmit}
+            onCancel={() => {
+              setEditingItem(null);
+            }}
+            initialItem={editingItem || undefined}
+            isInline={true}
+          />
+        </div>
+
         {/* Recipe Recommendation */}
         {items.length > 0 && (
           <RecipeRecommendation items={items} />
@@ -149,18 +152,6 @@ function App() {
           </>
         )}
       </main>
-
-      {/* Form Modal */}
-      {showForm && (
-        <ItemForm
-          onSubmit={handleSubmit}
-          onCancel={() => {
-            setShowForm(false);
-            setEditingItem(null);
-          }}
-          initialItem={editingItem || undefined}
-        />
-      )}
     </div>
   );
 }

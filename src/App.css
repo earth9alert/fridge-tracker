@@ -83,6 +83,11 @@
   padding: 2.5rem 1rem;
 }
 
+/* Form Section */
+.form-section {
+  margin-bottom: 2rem;
+}
+
 /* Alerts */
 .alert {
   padding: 1.5rem;
