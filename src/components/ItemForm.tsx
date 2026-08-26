@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FridgeItem, CATEGORIES } from '../types/item';
+import { ItemNameInput } from './ItemNameInput';
 import { QuickItemSelector } from './QuickItemSelector';
 import { commonUnits } from '../data/quickItems';
 import { dateUtils } from '../utils/date';
@@ -51,6 +52,14 @@ export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialI
     });
   };
 
+  const handleNameChange = (name: string, unit?: string) => {
+    setFormData({
+      ...formData,
+      name,
+      ...(unit && { unit }),
+    });
+  };
+
   return (
     <div className="item-form-overlay">
       <div className="item-form">
@@ -60,13 +69,10 @@ export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialI
           <div className="form-group">
             <label htmlFor="name">ชื่อสิ่งของ *</label>
             <div className="name-input-group">
-              <input
-                id="name"
-                type="text"
+              <ItemNameInput
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="เช่น แอปเปิ้ล, ไก่, น้ำนม"
-                autoFocus
+                onChange={handleNameChange}
+                onSelect={handleQuickSelect}
               />
               <QuickItemSelector onSelectItem={handleQuickSelect} />
             </div>

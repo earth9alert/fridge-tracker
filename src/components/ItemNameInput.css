@@ -1,0 +1,108 @@
+.item-name-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.item-name-input {
+  width: 100%;
+  padding: 0.75em;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1em;
+  font-family: inherit;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.item-name-input:focus {
+  outline: none;
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+}
+
+/* Suggestions Dropdown */
+.item-name-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  box-shadow: var(--shadow-md);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 100;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.75em 1em;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background-color: var(--bg-secondary);
+  padding-left: 1.25em;
+}
+
+.suggestion-name {
+  font-weight: 500;
+  flex: 1;
+}
+
+.suggestion-unit {
+  font-size: 0.85em;
+  color: var(--text-secondary);
+  background-color: rgba(2, 132, 199, 0.1);
+  padding: 0.25em 0.5em;
+  border-radius: 4px;
+  margin-left: 0.5em;
+  white-space: nowrap;
+}
+
+/* Scrollbar styling */
+.item-name-suggestions::-webkit-scrollbar {
+  width: 6px;
+}
+
+.item-name-suggestions::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 3px;
+}
+
+.item-name-suggestions::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.item-name-suggestions::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
