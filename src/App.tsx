@@ -6,6 +6,7 @@ import { CategoryFilter } from './components/CategoryFilter';
 import { SearchBar } from './components/SearchBar';
 import { BackupRestore } from './components/BackupRestore';
 import { RecipeRecommendation } from './components/RecipeRecommendation';
+import { FridgeVisual } from './components/FridgeVisual';
 import { FridgeItem, Category, CATEGORIES } from './types/item';
 import './App.css';
 
@@ -108,6 +109,9 @@ function App() {
         {/* Main Content */}
         {items.length > 0 && (
           <>
+            {/* Fridge Visual */}
+            <FridgeVisual items={items} />
+
             {/* Search and Filter Controls */}
             <div className="controls">
               <SearchBar value={searchQuery} onChange={setSearchQuery} />
