@@ -6,6 +6,32 @@ export interface QuickItem {
   unit: string;
 }
 
+export const commonUnits = [
+  'ชิ้น',
+  'ลูก',
+  'หัว',
+  'ตัว',
+  'กระจุกเล็ก',
+  'แพ็ค',
+  'ถุง',
+  'ขวด',
+  'กระปุก',
+  'กล่อง',
+  'หวี',
+  'กอ',
+  'มัด',
+  'กำ',
+  'ก้าน',
+  'แท่ง',
+  'ลิตร',
+  'มล.',
+  'กิโลกรัม',
+  'กก.',
+  'กรัม',
+  'ก.',
+  'ออนซ์',
+];
+
 export const quickItems: QuickItem[] = [
   // ผัก
   { name: 'หอม', category: 'vegetables', unit: 'หัว' },

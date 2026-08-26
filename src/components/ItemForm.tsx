@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FridgeItem, CATEGORIES } from '../types/item';
 import { QuickItemSelector } from './QuickItemSelector';
+import { commonUnits } from '../data/quickItems';
 import { dateUtils } from '../utils/date';
 import './ItemForm.css';
 
@@ -101,13 +102,17 @@ export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialI
 
             <div className="form-group">
               <label htmlFor="unit">หน่วย</label>
-              <input
+              <select
                 id="unit"
-                type="text"
                 value={formData.unit}
                 onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
-                placeholder="ชิ้น, กก, ลิตร"
-              />
+              >
+                {commonUnits.map(unit => (
+                  <option key={unit} value={unit}>
+                    {unit}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
