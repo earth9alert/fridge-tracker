@@ -111,9 +111,28 @@
 }
 
 /* Dark mode via data-theme attribute */
-:root[data-theme="dark"],
+:root[data-theme="dark"] {
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+  
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --text-light: #111827;
+  
+  --border: #374151;
+  --border-light: #4b5563;
+  --divider: #6b7280;
+  
+  background: linear-gradient(135deg, #0f172a 0%, #1f2937 100%);
+  color-scheme: dark;
+}
+
+/* Fallback for system dark mode preference */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg-primary: #111827;
     --bg-secondary: #1f2937;
     --bg-tertiary: #374151;
