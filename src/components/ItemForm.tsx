@@ -26,8 +26,8 @@ export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialI
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // ถ้าชื่อว่าง ไม่ทำอะไร เพียงปิด modal
     if (!formData.name.trim()) {
-      alert('กรุณากรอกชื่อสิ่งของ');
       return;
     }
 
