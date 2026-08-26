@@ -11,6 +11,7 @@ import './App.css';
 
 function App() {
   const { items, isLoading, addItem, updateItem, deleteItem, getExpiringItems, getExpiredItems } = useFridgeItems();
+  const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<FridgeItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,11 +52,13 @@ function App() {
     } else {
       addItem(item);
     }
+    setShowForm(false);
     setEditingItem(null);
   };
 
   const handleEdit = (item: FridgeItem) => {
     setEditingItem(item);
+    setShowForm(true);
   };
 
   const handleDelete = (id: string) => {
@@ -78,18 +81,6 @@ function App() {
       </header>
 
       <main className="app-main">
-        {/* Item Form - Always Visible */}
-        <div className="form-section">
-          <ItemForm
-            onSubmit={handleSubmit}
-            onCancel={() => {
-              setEditingItem(null);
-            }}
-            initialItem={editingItem || undefined}
-            isInline={true}
-          />
-        </div>
-
         {/* Recipe Recommendation */}
         {items.length > 0 && (
           <RecipeRecommendation items={items} />
@@ -152,6 +143,30 @@ function App() {
           </>
         )}
       </main>
+
+      {/* Floating Action Button */}
+      <button
+        className="fab fab-add"
+        onClick={() => {
+          setEditingItem(null);
+          setShowForm(true);
+        }}
+        title="เพิ่มสิ่งของใหม่"
+      >
+        ➕
+      </button>
+
+      {/* Form Modal */}
+      {showForm && (
+        <ItemForm
+          onSubmit={handleSubmit}
+          onCancel={() => {
+            setShowForm(false);
+            setEditingItem(null);
+          }}
+          initialItem={editingItem || undefined}
+        />
+      )}
     </div>
   );
 }

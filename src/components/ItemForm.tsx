@@ -10,10 +10,9 @@ interface ItemFormProps {
   onSubmit: (item: FridgeItem) => void;
   onCancel: () => void;
   initialItem?: FridgeItem;
-  isInline?: boolean;
 }
 
-export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialItem, isInline }) => {
+export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialItem }) => {
   const [formData, setFormData] = useState({
     name: initialItem?.name || '',
     category: initialItem?.category || 'vegetables',
@@ -62,8 +61,8 @@ export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialI
   };
 
   return (
-    <div className={isInline ? 'item-form item-form--inline' : 'item-form-overlay'}>
-      <div className={isInline ? 'item-form__content' : 'item-form'}>
+    <div className="item-form-overlay">
+      <div className="item-form">
         <h2>{initialItem ? 'แก้ไขสิ่งของ' : 'เพิ่มสิ่งของใหม่'}</h2>
 
         <form onSubmit={handleSubmit}>
@@ -148,11 +147,9 @@ export const ItemForm: React.FC<ItemFormProps> = ({ onSubmit, onCancel, initialI
             <button type="submit" className="btn-primary">
               {initialItem ? 'บันทึกการเปลี่ยนแปลง' : 'เพิ่มสิ่งของ'}
             </button>
-            {!isInline && (
-              <button type="button" className="btn-secondary" onClick={onCancel}>
-                ยกเลิก
-              </button>
-            )}
+            <button type="button" className="btn-secondary" onClick={onCancel}>
+              ยกเลิก
+            </button>
           </div>
         </form>
       </div>
