@@ -55,6 +55,11 @@ function App() {
     }
     setShowForm(false);
     setEditingItem(null);
+    
+    // Scroll to top ดู Fridge Visual
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 300);
   };
 
   const handleEdit = (item: FridgeItem) => {
