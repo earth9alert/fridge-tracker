@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FridgeItem, Portion } from '../types/item';
 import { PortionManager } from './PortionManager';
+import { getCategoryIcon } from '../utils/icons';
 import { dateUtils } from '../utils/date';
 import './ItemCard.css';
 
@@ -36,7 +37,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onDelete, onUp
   return (
     <div className={`item-card item-card--${expiryStatus}`}>
       <div className="item-card__header">
-        <h3 className="item-card__name">{item.name}</h3>
+        <div className="item-card__icon-name">
+          <span className="item-card__icon">{getCategoryIcon(item.category)}</span>
+          <h3 className="item-card__name">{item.name}</h3>
+        </div>
         {expiryStatus !== 'good' && (
           <span className={`item-card__status item-card__status--${expiryStatus}`}>
             {expiryStatus === 'expired' ? '⚠️ หมดอายุ' : '⏰ กำลังหมดอายุ'}
