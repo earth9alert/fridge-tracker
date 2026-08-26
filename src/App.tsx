@@ -6,7 +6,6 @@ import { CategoryFilter } from './components/CategoryFilter';
 import { SearchBar } from './components/SearchBar';
 import { BackupRestore } from './components/BackupRestore';
 import { RecipeRecommendation } from './components/RecipeRecommendation';
-import { ShoppingRecommendation } from './components/ShoppingRecommendation';
 import { FridgeItem, Category, CATEGORIES } from './types/item';
 import './App.css';
 
@@ -122,9 +121,6 @@ function App() {
 
             {/* Recipe Recommendations */}
             <RecipeRecommendation items={items} />
-
-            {/* Shopping Recommendations */}
-            <ShoppingRecommendation items={items} />
 
             {/* Items Grid */}
             {filteredItems.length === 0 ? (
